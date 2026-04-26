@@ -40,20 +40,20 @@
         }
 
         [data-theme="dark"] {
-            --cream: #121212;
-            --white: #1A1A1A;
-            --ink: #E5E7EB;
-            --ink-light: #9CA3AF;
-            --ink-muted: #6B7280;
+            --cream: #0F1419;
+            --white: #1A202C;
+            --ink: #E8EAED;
+            --ink-light: #B0B4BA;
+            --ink-muted: #808589;
             --accent: #60A5FA;
-            --accent-soft: rgba(96, 165, 250, 0.15);
-            --accent-mid: rgba(96, 165, 250, 0.3);
-            --border: #333333;
-            --tag-bg: #27272A;
+            --accent-soft: #1E3A8A;
+            --accent-mid: #3B82F6;
+            --border: #2D3748;
+            --tag-bg: #1F2937;
             --success: #34D399;
             --success-soft: rgba(52, 211, 153, 0.15);
-            --nav-bg: rgba(18, 18, 18, 0.88);
-            --thumb-bg-1: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0.05) 100%);
+            --nav-bg: rgba(15, 20, 25, 0.95);
+            --thumb-bg-1: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(96, 165, 250, 0.05) 100%);
             --thumb-bg-2: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
             --thumb-bg-3: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
             --thumb-bg-4: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
@@ -332,6 +332,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -341,15 +342,19 @@
             0% {
                 transform: rotate(360deg);
             }
+
             100% {
                 transform: rotate(0deg);
             }
         }
 
         @keyframes glow {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
             }
+
             50% {
                 box-shadow: 0 0 40px rgba(124, 58, 237, 0.8);
             }
@@ -630,34 +635,50 @@
             border-color: var(--accent-mid);
         }
 
-        /* ── PROJECTS ── */
+        /* ── PROJECTS CAROUSEL ── */
         #projects {
             background: var(--white);
+            position: relative;
+        }
+
+        .projects-carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin: 0 -24px;
+            padding: 0 24px;
         }
 
         .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 28px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            width: 100%;
+        }
+
+        .projects-grid::-webkit-scrollbar {
+            display: none;
         }
 
         .project-card {
+            flex: 0 0 calc(33.333% - 18.66px);
+            scroll-snap-align: start;
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
             background: var(--cream);
             transition: box-shadow 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card:hover {
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.09);
             transform: translateY(-4px);
-        }
-
-        .project-card.featured {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
         }
 
         .project-thumb {
@@ -667,6 +688,7 @@
             align-items: center;
             justify-content: center;
             font-size: 64px;
+            height: 200px;
         }
 
         .project-thumb.green {
@@ -683,6 +705,9 @@
 
         .project-body {
             padding: 28px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-meta {
@@ -734,6 +759,7 @@
             flex-wrap: wrap;
             gap: 6px;
             margin-bottom: 18px;
+            margin-top: auto;
         }
 
         .outcome-row {
@@ -743,12 +769,71 @@
             background: var(--success-soft);
             border-radius: var(--radius-sm);
             padding: 10px 14px;
+            margin-top: 10px;
         }
 
         .outcome-row span {
             font-size: 13px;
             color: var(--success);
             font-weight: 500;
+        }
+
+        /* Carousel Navigation */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px rgba(255, 107, 61, 0.2);
+        }
+
+        .prev-btn {
+            left: -10px;
+        }
+
+        .next-btn {
+            right: -10px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 100px;
         }
 
         /* ── EDUCATION ── */
@@ -1031,12 +1116,9 @@
                 gap: 40px;
             }
 
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .project-card.featured {
-                grid-template-columns: 1fr;
+            .project-card {
+                flex: 0 0 calc(50% - 14px);
+                /* 2 cards on tablet */
             }
 
             .skills-grid,
@@ -1054,6 +1136,20 @@
         }
 
         @media (max-width: 600px) {
+            .project-card {
+                flex: 0 0 100%;
+                /* 1 card on mobile */
+            }
+
+            .projects-carousel-wrapper {
+                margin: 0;
+                padding: 0;
+            }
+
+            .carousel-btn {
+                display: none;
+                /* Hide arrows on mobile, rely on swipe */
+            }
 
             .skills-grid,
             .cert-grid {
@@ -1112,7 +1208,8 @@
             </div>
             <div class="reveal" style="transition-delay:0.15s">
                 <div class="hero-card">
-                    <div class="avatar-ring"><img src="WhatsApp Image 2026-04-23 at 8.27.25 PM.jpeg" alt="Rohit Gusain" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+                    <div class="avatar-ring"><img src="WhatsApp Image 2026-04-23 at 8.27.25 PM.jpeg" alt="Rohit Gusain"
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
                     <h3>Rohit Gusain</h3>
                     <p>AI/ML Student · New Delhi, India</p>
                     <div class="stat-row">
@@ -1123,8 +1220,10 @@
                     </div>
                     <div class="social-strip">
                         <a href="https://github.com/rohitgusain798" target="_blank" class="social-link">⌥ GitHub</a>
-                        <a href="https://www.linkedin.com/in/rohit-gusain-68a584317/" target="_blank" class="social-link">in LinkedIn</a>
-                        <a href="https://www.instagram.com/rohit_gusain22/" target="_blank" class="social-link">◎ Instagram</a>
+                        <a href="https://www.linkedin.com/in/rohit-gusain-68a584317/" target="_blank"
+                            class="social-link">in LinkedIn</a>
+                        <a href="https://www.instagram.com/rohit_gusain22/" target="_blank" class="social-link">◎
+                            Instagram</a>
                     </div>
                 </div>
             </div>
@@ -1286,155 +1385,175 @@
             <div class="reveal">
                 <p class="section-label">Projects</p>
                 <h2 class="section-title">Work I'm proud of</h2>
-                <p class="section-sub">Full-stack applications and AI-powered solutions — built to solve real-world problems and demonstrate technical expertise.</p>
+                <p class="section-sub">Full-stack applications and AI-powered solutions — built to solve real-world
+                    problems and demonstrate technical expertise.</p>
             </div>
-            <div class="projects-grid">
+            <div class="projects-carousel-wrapper">
+                <button class="carousel-btn prev-btn" aria-label="Previous project">←</button>
+                <div class="projects-grid carousel-track" id="projects-track">
 
-                <!-- Featured Project -->
-                <div class="project-card featured reveal">
-                    <div class="project-thumb">💻</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">Featured · CS50 Final Project</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>CS50 Final Project</h3>
-                        <p>Developed a comprehensive web application as the capstone project for Harvard's CS50 course. Built a full-stack solution with user authentication, database integration, and responsive design to solve a real-world problem.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">Python</span>
-                            <span class="tag blue">Flask</span>
-                            <span class="tag">HTML/CSS</span>
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">SQLite</span>
-                            <span class="tag">Bootstrap</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ Full-stack web app with 100+ users · Implemented secure authentication and data persistence</span>
+                    <!-- Featured Project -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb">💻</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">Featured · CS50 Final Project</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>CS50 Final Project</h3>
+                            <p>Developed a comprehensive web application as the capstone project for Harvard's CS50
+                                course. Built a full-stack solution with user authentication, database integration, and
+                                responsive design to solve a real-world problem.</p>
+                            <div class="project-tools">
+                                <span class="tag blue">Python</span>
+                                <span class="tag blue">Flask</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">Bootstrap</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ Full-stack web app with 100+ users · Implemented secure authentication and data
+                                    persistence</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 2 -->
-                <div class="project-card reveal">
-                    <div class="project-thumb green">💰</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">Web Application · HR Tools</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>Salary Slip Generator</h3>
-                        <p>Created an automated salary slip generation system that calculates employee compensation including basic pay, allowances, deductions, and taxes. Features PDF export functionality and data validation for accurate payroll processing.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">JavaScript</span>
-                            <span class="tag blue">Node.js</span>
-                            <span class="tag">Express</span>
-                            <span class="tag">PDFKit</span>
-                            <span class="tag">MongoDB</span>
-                            <span class="tag">EJS</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ Processes 500+ slips/hour · 99.5% accuracy in tax calculations</span>
+                    <!-- Project 2 -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb green">💰</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">Web Application · HR Tools</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>Salary Slip Generator</h3>
+                            <p>Created an automated salary slip generation system that calculates employee compensation
+                                including basic pay, allowances, deductions, and taxes. Features PDF export
+                                functionality and data validation for accurate payroll processing.</p>
+                            <div class="project-tools">
+                                <span class="tag blue">JavaScript</span>
+                                <span class="tag blue">Node.js</span>
+                                <span class="tag">Express</span>
+                                <span class="tag">PDFKit</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">EJS</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ Processes 500+ slips/hour · 99.5% accuracy in tax calculations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 3 -->
-                <div class="project-card reveal" style="transition-delay:0.1s">
-                    <div class="project-thumb orange">📚</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">Database System · Management</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>Library Management System</h3>
-                        <p>Designed and implemented a complete library management system with book cataloging, user management, borrowing/returning functionality, and overdue tracking. Includes admin dashboard for inventory management and reporting.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">Java</span>
-                            <span class="tag blue">Spring Boot</span>
-                            <span class="tag">MySQL</span>
-                            <span class="tag">Thymeleaf</span>
-                            <span class="tag">JPA/Hibernate</span>
-                            <span class="tag">Bootstrap</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ Manages 10,000+ books · 95% reduction in manual tracking errors</span>
+                    <!-- Project 3 -->
+                    <div class="project-card reveal" style="transition-delay:0.1s">
+                        <div class="project-thumb orange">📚</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">Database System · Management</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>Library Management System</h3>
+                            <p>Designed and implemented a complete library management system with book cataloging, user
+                                management, borrowing/returning functionality, and overdue tracking. Includes admin
+                                dashboard for inventory management and reporting.</p>
+                            <div class="project-tools">
+                                <span class="tag blue">Java</span>
+                                <span class="tag blue">Spring Boot</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">Thymeleaf</span>
+                                <span class="tag">JPA/Hibernate</span>
+                                <span class="tag">Bootstrap</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ Manages 10,000+ books · 95% reduction in manual tracking errors</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 4 -->
-                <div class="project-card reveal" style="transition-delay:0.15s">
-                    <div class="project-thumb purple">📄</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">NLP · HR Tech</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>AI-Powered Resume Analyzer</h3>
-                        <p>Built an intelligent resume analysis tool that extracts key information, scores candidates based on job requirements, and provides detailed feedback. Uses NLP techniques to identify skills, experience, and qualifications from unstructured text.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">Python</span>
-                            <span class="tag blue">spaCy</span>
-                            <span class="tag">FastAPI</span>
-                            <span class="tag">Transformers</span>
-                            <span class="tag">React</span>
-                            <span class="tag">PostgreSQL</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ 92% accuracy in skill extraction · Processes 100+ resumes/minute</span>
+                    <!-- Project 4 -->
+                    <div class="project-card reveal" style="transition-delay:0.15s">
+                        <div class="project-thumb purple">📄</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">NLP · HR Tech</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>AI-Powered Resume Analyzer</h3>
+                            <p>Built an intelligent resume analysis tool that extracts key information, scores
+                                candidates based on job requirements, and provides detailed feedback. Uses NLP
+                                techniques to identify skills, experience, and qualifications from unstructured text.
+                            </p>
+                            <div class="project-tools">
+                                <span class="tag blue">Python</span>
+                                <span class="tag blue">spaCy</span>
+                                <span class="tag">FastAPI</span>
+                                <span class="tag">Transformers</span>
+                                <span class="tag">React</span>
+                                <span class="tag">PostgreSQL</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ 92% accuracy in skill extraction · Processes 100+ resumes/minute</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 5 -->
-                <div class="project-card reveal" style="transition-delay:0.2s">
-                    <div class="project-thumb blue">🛒</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">Recommendation System · E-commerce</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>E-commerce Recommendation Engine</h3>
-                        <p>Developed a personalized product recommendation system for an online store using collaborative filtering and content-based approaches. Analyzes user behavior patterns to suggest relevant products and improve conversion rates.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">Python</span>
-                            <span class="tag blue">Scikit-learn</span>
-                            <span class="tag">Pandas</span>
-                            <span class="tag">Surprise</span>
-                            <span class="tag">Flask</span>
-                            <span class="tag">Redis</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ 28% increase in click-through rate · Serves 10,000+ recommendations daily</span>
+                    <!-- Project 5 -->
+                    <div class="project-card reveal" style="transition-delay:0.2s">
+                        <div class="project-thumb blue">🛒</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">Recommendation System · E-commerce</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>E-commerce Recommendation Engine</h3>
+                            <p>Developed a personalized product recommendation system for an online store using
+                                collaborative filtering and content-based approaches. Analyzes user behavior patterns to
+                                suggest relevant products and improve conversion rates.</p>
+                            <div class="project-tools">
+                                <span class="tag blue">Python</span>
+                                <span class="tag blue">Scikit-learn</span>
+                                <span class="tag">Pandas</span>
+                                <span class="tag">Surprise</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">Redis</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ 28% increase in click-through rate · Serves 10,000+ recommendations daily</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Project 6 -->
-                <div class="project-card reveal" style="transition-delay:0.25s">
-                    <div class="project-thumb green">✅</div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-type">Productivity · Web App</span>
-                            <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
-                        </div>
-                        <h3>Task Management Dashboard</h3>
-                        <p>Created a collaborative task management application with real-time updates, team collaboration features, and progress tracking. Includes drag-and-drop interface, deadline notifications, and comprehensive reporting tools.</p>
-                        <div class="project-tools">
-                            <span class="tag blue">React</span>
-                            <span class="tag blue">Node.js</span>
-                            <span class="tag">Socket.io</span>
-                            <span class="tag">MongoDB</span>
-                            <span class="tag">Express</span>
-                            <span class="tag">Material-UI</span>
-                        </div>
-                        <div class="outcome-row">
-                            <span>✅ 200+ active users · 40% improvement in team productivity metrics</span>
+                    <!-- Project 6 -->
+                    <div class="project-card reveal" style="transition-delay:0.25s">
+                        <div class="project-thumb green">✅</div>
+                        <div class="project-body">
+                            <div class="project-meta">
+                                <span class="project-type">Productivity · Web App</span>
+                                <a href="https://github.com/" target="_blank" class="project-link">GitHub →</a>
+                            </div>
+                            <h3>Task Management Dashboard</h3>
+                            <p>Created a collaborative task management application with real-time updates, team
+                                collaboration features, and progress tracking. Includes drag-and-drop interface,
+                                deadline notifications, and comprehensive reporting tools.</p>
+                            <div class="project-tools">
+                                <span class="tag blue">React</span>
+                                <span class="tag blue">Node.js</span>
+                                <span class="tag">Socket.io</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Express</span>
+                                <span class="tag">Material-UI</span>
+                            </div>
+                            <div class="outcome-row">
+                                <span>✅ 200+ active users · 40% improvement in team productivity metrics</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
+                <button class="carousel-btn next-btn" aria-label="Next project">→</button>
             </div>
+            <div class="carousel-dots" id="carousel-dots"></div>
         </div>
     </section>
 
@@ -1543,9 +1662,12 @@
                             <span class="ci-icon">✉️</span>
                             <div class="ci-text"><strong>Email</strong><span>gusainrohit730@gmail.com</span></div>
                         </a>
-                        <a href="https://www.linkedin.com/in/rohit-gusain-68a584317/" target="_blank" class="contact-item">
+                        <a href="https://www.linkedin.com/in/rohit-gusain-68a584317/" target="_blank"
+                            class="contact-item">
                             <span class="ci-icon">💼</span>
-                            <div class="ci-text"><strong>LinkedIn</strong><span>linkedin.com/in/rohit-gusain-68a584317</span></div>
+                            <div class="ci-text">
+                                <strong>LinkedIn</strong><span>linkedin.com/in/rohit-gusain-68a584317</span>
+                            </div>
                         </a>
                         <a href="https://github.com/rohitgusain798" target="_blank" class="contact-item">
                             <span class="ci-icon">⌥</span>
@@ -1602,6 +1724,61 @@
                 a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
             });
         });
+
+        // Projects Carousel Logic
+        const track = document.getElementById('projects-track');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const dotsContainer = document.getElementById('carousel-dots');
+
+        if (track && prevBtn && nextBtn && dotsContainer) {
+            const cards = Array.from(track.children);
+
+            // Create dots
+            cards.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    const cardWidth = cards[0].getBoundingClientRect().width;
+                    const gap = 28;
+                    track.scrollTo({
+                        left: (cardWidth + gap) * index,
+                        behavior: 'smooth'
+                    });
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            const dots = Array.from(dotsContainer.children);
+
+            // Update dots on scroll
+            track.addEventListener('scroll', () => {
+                const scrollLeft = track.scrollLeft;
+                const cardWidth = cards[0].getBoundingClientRect().width;
+                const gap = 28;
+                let index = Math.round(scrollLeft / (cardWidth + gap));
+                if (index >= dots.length) index = dots.length - 1;
+
+                dots.forEach(d => d.classList.remove('active'));
+                if (dots[index]) {
+                    dots[index].classList.add('active');
+                }
+            });
+
+            // Arrows
+            nextBtn.addEventListener('click', () => {
+                const cardWidth = cards[0].getBoundingClientRect().width;
+                const gap = 28;
+                track.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+            });
+
+            prevBtn.addEventListener('click', () => {
+                const cardWidth = cards[0].getBoundingClientRect().width;
+                const gap = 28;
+                track.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+            });
+        }
 
         // Theme toggle functionality
         const themeToggleBtn = document.getElementById('theme-toggle');
