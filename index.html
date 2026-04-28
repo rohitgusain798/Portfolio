@@ -270,6 +270,70 @@
             color: var(--accent);
         }
 
+        /* ── TYPING ANIMATION ── */
+        .typing-subtitle {
+            font-size: clamp(16px, 3vw, 22px);
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            min-height: 1.6em;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .typing-text {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Blinking cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent);
+            margin-left: 4px;
+            animation: blinkCursor 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blinkCursor {
+            0%, 49% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 0;
+            }
+        }
+
+        /* Typing animation transition */
+        .typing-text.transition {
+            animation: fadeOutText 0.3s ease forwards;
+        }
+
+        @keyframes fadeOutText {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .typing-text.entering {
+            animation: fadeInText 0.3s ease forwards;
+        }
+
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
         .hero-tagline {
             font-size: 18px;
             color: var(--ink-light);
@@ -582,51 +646,296 @@
             background: var(--cream);
         }
 
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+        /* ── SKILLS TABS ── */
+        .skills-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 48px;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            padding-bottom: 16px;
         }
 
-        .skill-card {
+        .skills-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            transition: color 0.2s, border-color 0.2s;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            top: 2px;
+            white-space: nowrap;
+        }
+
+        .skills-tab:hover {
+            color: var(--ink-light);
+        }
+
+        .skills-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── SKILLS GRID ── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        /* ── SKILL ITEM ── */
+        .skill-item {
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 28px;
-            transition: box-shadow 0.2s, transform 0.2s;
+            padding: 32px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        .skill-card:hover {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            transform: translateY(-3px);
+        .skill-item.animate {
+            animation: slideInUp 0.6s ease forwards;
         }
 
-        .skill-card-icon {
-            font-size: 28px;
-            margin-bottom: 14px;
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .skill-card h3 {
-            font-size: 15px;
+        .skill-item:hover {
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12);
+            transform: translateY(-6px);
+        }
+
+        /* ── SKILL HEADER ── */
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .skill-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .skill-header h3 {
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 16px;
+            color: var(--ink);
+            margin: 0;
+        }
+
+        /* ── PROGRESS BAR ── */
+        .skill-skill {
+            margin-bottom: 24px;
+        }
+
+        .skill-skill:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .skill-name label {
+            font-size: 13px;
+            font-weight: 600;
             color: var(--ink);
         }
 
+        .skill-percentage {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 35px;
+            text-align: right;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #7C3AED);
+            border-radius: 100px;
+            width: 0%;
+            animation: fillBar 0.8s ease-out forwards;
+            position: relative;
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes fillBar {
+            from {
+                width: 0%;
+            }
+            to {
+                width: var(--percentage);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* ── CIRCULAR PROGRESS ── */
+        .skills-circular {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .circular-skill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .circular-skill.animate {
+            animation: scaleIn 0.6s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 16px;
+        }
+
+        .circular-progress svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+        }
+
+        .progress-circle-bg {
+            stroke: var(--border);
+        }
+
+        .progress-circle-fill {
+            stroke: url(#gradient);
+            stroke-dasharray: 339.292;
+            stroke-dashoffset: 339.292;
+            animation: fillCircle 1s ease-out forwards;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        @keyframes fillCircle {
+            to {
+                stroke-dashoffset: var(--offset);
+            }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .progress-label {
+            font-size: 10px;
+            color: var(--ink-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .circular-skill-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-top: 8px;
+        }
+
+        /* ── SKILL TAGS ── */
         .skill-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            margin-top: 16px;
         }
 
         .tag {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             background: var(--tag-bg);
             color: var(--ink-light);
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 100px;
             border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         .tag.blue {
@@ -635,35 +944,71 @@
             border-color: var(--accent-mid);
         }
 
+        .tag.blue:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
         /* ── PROJECTS CAROUSEL ── */
         #projects {
             background: var(--white);
             position: relative;
         }
 
-        .projects-carousel-wrapper {
+        /* ── PROJECT FILTERS ── */
+        .projects-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            background: var(--cream);
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            color: var(--ink-light);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: relative;
-            display: flex;
-            align-items: center;
-            margin: 0 -24px;
-            padding: 0 24px;
+            overflow: hidden;
         }
 
-        .projects-grid {
-            display: flex;
-            gap: 28px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
+            height: 100%;
+            background: var(--accent-soft);
+            transition: left 0.3s ease;
+            z-index: -1;
         }
 
-        .projects-grid::-webkit-scrollbar {
-            display: none;
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
         }
 
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .filter-btn.active::before {
+            left: 0;
+        }
+
+        /* ── PROJECT CARD FILTERING ── */
         .project-card {
             flex: 0 0 calc(33.333% - 18.66px);
             scroll-snap-align: start;
@@ -671,7 +1016,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             background: var(--cream);
-            transition: box-shadow 0.2s, transform 0.2s;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
             display: flex;
             flex-direction: column;
         }
@@ -679,6 +1024,23 @@
         .project-card:hover {
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.09);
             transform: translateY(-4px);
+        }
+
+        /* Filter states for cards */
+        .project-card.filtered {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95) translateY(-10px);
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            position: relative;
+            pointer-events: auto;
         }
 
         .project-thumb {
@@ -1094,6 +1456,323 @@
             transform: none;
         }
 
+        /* ── CHATBOT WIDGET ── */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Chat toggle button */
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #7C3AED 100%);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 28px rgba(37, 99, 235, 0.5);
+        }
+
+        .chatbot-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .chatbot-toggle.open {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Chat window */
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 380px;
+            max-height: 600px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .chatbot-window.open {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Chat header */
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--accent) 0%, #7C3AED 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chatbot-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Messages container */
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: var(--cream);
+        }
+
+        .chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb:hover {
+            background: var(--ink-muted);
+        }
+
+        /* Message styling */
+        .message {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            animation: slideInUp 0.3s ease forwards;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-content {
+            background: var(--white);
+            border: 1px solid var(--border);
+            color: var(--ink);
+        }
+
+        .message.user .message-content {
+            background: var(--accent);
+            color: white;
+            border-radius: 14px 0 14px 14px;
+        }
+
+        /* Typing indicator */
+        .message.typing .message-content {
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ink-muted);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-8px);
+            }
+        }
+
+        /* Suggested responses */
+        .chatbot-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 16px;
+        }
+
+        .suggestion-btn {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-mid);
+            color: var(--accent);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--accent-mid);
+            color: white;
+            transform: translateX(2px);
+        }
+
+        /* Input area */
+        .chatbot-input-area {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            background: var(--white);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+            transition: border-color 0.2s;
+        }
+
+        .chatbot-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--white);
+        }
+
+        .chatbot-input::placeholder {
+            color: var(--ink-muted);
+        }
+
+        .chatbot-send {
+            background: var(--accent);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .chatbot-send:hover {
+            background: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .chatbot-send:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .chatbot-container {
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .chatbot-window {
+                width: calc(100vw - 32px);
+                max-height: calc(100vh - 100px);
+                bottom: 75px;
+            }
+
+            .chatbot-toggle {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+            }
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             nav {
@@ -1116,6 +1795,15 @@
                 gap: 40px;
             }
 
+            .projects-filters {
+                justify-content: center;
+            }
+
+            .filter-btn {
+                padding: 9px 18px;
+                font-size: 12px;
+            }
+
             .project-card {
                 flex: 0 0 calc(50% - 14px);
                 /* 2 cards on tablet */
@@ -1136,6 +1824,17 @@
         }
 
         @media (max-width: 600px) {
+            .projects-filters {
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 8px 14px;
+                font-size: 11px;
+                letter-spacing: 0.3px;
+            }
+
             .project-card {
                 flex: 0 0 100%;
                 /* 1 card on mobile */
@@ -1308,69 +2007,598 @@
                 <p class="section-sub">A curated overview of languages, frameworks, and tools I use across the ML
                     development lifecycle.</p>
             </div>
-            <div class="skills-grid">
-                <div class="skill-card reveal">
-                    <div class="skill-card-icon">🐍</div>
-                    <h3>Programming Languages</h3>
+
+            <!-- Skills Category Tabs -->
+            <div class="reveal">
+                <div class="skills-tabs" id="skillsTabs">
+                    <button class="skills-tab active" data-category="programming">Programming Languages</button>
+                    <button class="skills-tab" data-category="ml">ML/DL Frameworks</button>
+                    <button class="skills-tab" data-category="libraries">Data & Libraries</button>
+                    <button class="skills-tab" data-category="tools">Cloud & Tools</button>
+                </div>
+            </div>
+
+            <!-- Programming Languages -->
+            <div class="skills-grid reveal" id="programming">
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🐍</span>
+                        <h3>Python</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 95%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">Python</span>
-                        <span class="tag blue">SQL</span>
-                        <span class="tag">R (Basic)</span>
-                        <span class="tag">C++</span>
-                        <span class="tag">JavaScript</span>
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">ML Development</span>
+                        <span class="tag">Data Analysis</span>
                     </div>
                 </div>
-                <div class="skill-card reveal" style="transition-delay:0.1s">
-                    <div class="skill-card-icon">🧠</div>
-                    <h3>ML / DL Frameworks</h3>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">💾</span>
+                        <h3>SQL</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 85%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">TensorFlow</span>
-                        <span class="tag blue">PyTorch</span>
-                        <span class="tag blue">Scikit-learn</span>
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Database Design</span>
+                        <span class="tag">Queries</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🌐</span>
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Web Dev</span>
+                        <span class="tag">DOM</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">⚙️</span>
+                        <h3>C++</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Intermediate</span>
+                        <span class="tag">Algorithms</span>
+                        <span class="tag">DSA</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📊</span>
+                        <h3>R</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag">Intermediate</span>
+                        <span class="tag">Statistics</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">☕</span>
+                        <h3>Java</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Intermediate</span>
+                        <span class="tag">OOP</span>
+                        <span class="tag">Backend</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML/DL Frameworks (Initially Hidden) -->
+            <div class="skills-grid reveal" id="ml" style="display: none;">
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📚</span>
+                        <h3>TensorFlow</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Deep Learning</span>
                         <span class="tag">Keras</span>
-                        <span class="tag">Hugging Face</span>
                     </div>
                 </div>
-                <div class="skill-card reveal" style="transition-delay:0.2s">
-                    <div class="skill-card-icon">📊</div>
-                    <h3>Data Science & Analysis</h3>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🔥</span>
+                        <h3>PyTorch</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 80%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">Pandas</span>
-                        <span class="tag blue">NumPy</span>
-                        <span class="tag">Matplotlib</span>
-                        <span class="tag">Seaborn</span>
-                        <span class="tag">Plotly</span>
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Neural Networks</span>
+                        <span class="tag">Computer Vision</span>
                     </div>
                 </div>
-                <div class="skill-card reveal" style="transition-delay:0.05s">
-                    <div class="skill-card-icon">☁️</div>
-                    <h3>Cloud & DevOps Tools</h3>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🎯</span>
+                        <h3>Scikit-learn</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 90%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">Git & GitHub</span>
-                        <span class="tag">Google Colab</span>
-                        <span class="tag">AWS SageMaker (Basic)</span>
-                        <span class="tag">Docker (Intro)</span>
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Classification</span>
+                        <span class="tag">Regression</span>
                     </div>
                 </div>
-                <div class="skill-card reveal" style="transition-delay:0.15s">
-                    <div class="skill-card-icon">🗄️</div>
-                    <h3>Databases & Storage</h3>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🤖</span>
+                        <h3>Hugging Face</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 75%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">MySQL</span>
-                        <span class="tag blue">PostgreSQL</span>
-                        <span class="tag">MongoDB (Basic)</span>
-                        <span class="tag">SQLite</span>
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Transformers</span>
+                        <span class="tag">NLP</span>
                     </div>
                 </div>
-                <div class="skill-card reveal" style="transition-delay:0.25s">
-                    <div class="skill-card-icon">🛠️</div>
-                    <h3>Other Tools</h3>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">⚛️</span>
+                        <h3>Keras</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 85%;"></div>
+                        </div>
+                    </div>
                     <div class="skill-tags">
-                        <span class="tag blue">Jupyter Notebooks</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">Streamlit</span>
-                        <span class="tag">Kaggle</span>
-                        <span class="tag">VS Code</span>
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Sequential Models</span>
+                        <span class="tag">Functional API</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data & Libraries (Initially Hidden) -->
+            <div class="skills-grid reveal" id="libraries" style="display: none;">
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🐼</span>
+                        <h3>Pandas</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Data Manipulation</span>
+                        <span class="tag">EDA</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🔢</span>
+                        <h3>NumPy</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Numerical Computing</span>
+                        <span class="tag">Arrays</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📈</span>
+                        <h3>Matplotlib</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Data Visualization</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🎨</span>
+                        <h3>Seaborn</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">82%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 82%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Statistical Graphics</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📊</span>
+                        <h3>Plotly</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Intermediate</span>
+                        <span class="tag">Interactive Plots</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📐</span>
+                        <h3>SciPy</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">78%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 78%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">Scientific Computing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cloud & Tools (Initially Hidden) -->
+            <div class="skills-grid reveal" id="tools" style="display: none;">
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🔗</span>
+                        <h3>Git & GitHub</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Version Control</span>
+                        <span class="tag">Collaboration</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">☁️</span>
+                        <h3>Google Colab</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Cloud Notebooks</span>
+                        <span class="tag">GPU Training</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🐳</span>
+                        <h3>Docker</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag">Intermediate</span>
+                        <span class="tag">Containerization</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">⚡</span>
+                        <h3>AWS & Cloud</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag">Beginner</span>
+                        <span class="tag">SageMaker</span>
+                        <span class="tag">EC2</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">📔</span>
+                        <h3>Jupyter Notebooks</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Expert</span>
+                        <span class="tag">Data Science</span>
+                        <span class="tag">Analysis</span>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">🚀</span>
+                        <h3>FastAPI</h3>
+                    </div>
+                    <div class="skill-skill">
+                        <div class="skill-name">
+                            <label>Proficiency</label>
+                            <span class="skill-percentage">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-fill" style="--percentage: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="tag blue">Advanced</span>
+                        <span class="tag">API Development</span>
+                        <span class="tag">Deployment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Circular Indicators for Overall Expertise -->
+            <div class="reveal" style="margin-top: 56px;">
+                <h3 class="section-title" style="font-size: 24px; margin-bottom: 32px;">Overall Expertise</h3>
+                <div class="skills-circular">
+                    <!-- Machine Learning Circle -->
+                    <div class="circular-skill">
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:var(--accent);stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Background circle -->
+                                <circle class="progress-circle progress-circle-bg" cx="60" cy="60" r="54"></circle>
+                                <!-- Filled circle for ML -->
+                                <circle class="progress-circle progress-circle-fill" cx="60" cy="60" r="54"
+                                    style="--offset: calc(339.292 * (1 - 0.85));"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value">85%</div>
+                                <div class="progress-label">ML Knowledge</div>
+                            </div>
+                        </div>
+                        <div class="circular-skill-name">Machine Learning</div>
+                    </div>
+
+                    <!-- Data Analysis Circle -->
+                    <div class="circular-skill">
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#34D399;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-circle progress-circle-bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle progress-circle-fill" cx="60" cy="60" r="54"
+                                    style="--offset: calc(339.292 * (1 - 0.88)); stroke: url(#gradient2);"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value">88%</div>
+                                <div class="progress-label">Data Analysis</div>
+                            </div>
+                        </div>
+                        <div class="circular-skill-name">Data Analysis</div>
+                    </div>
+
+                    <!-- Web Development Circle -->
+                    <div class="circular-skill">
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#FBBF24;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-circle progress-circle-bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle progress-circle-fill" cx="60" cy="60" r="54"
+                                    style="--offset: calc(339.292 * (1 - 0.72)); stroke: url(#gradient3);"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value">72%</div>
+                                <div class="progress-label">Web Dev</div>
+                            </div>
+                        </div>
+                        <div class="circular-skill-name">Web Development</div>
+                    </div>
+
+                    <!-- Research & Deployment Circle -->
+                    <div class="circular-skill">
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#A78BFA;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-circle progress-circle-bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle progress-circle-fill" cx="60" cy="60" r="54"
+                                    style="--offset: calc(339.292 * (1 - 0.78)); stroke: url(#gradient4);"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value">78%</div>
+                                <div class="progress-label">Deployment</div>
+                            </div>
+                        </div>
+                        <div class="circular-skill-name">MLOps & Deployment</div>
                     </div>
                 </div>
             </div>
@@ -1388,12 +2616,23 @@
                 <p class="section-sub">Full-stack applications and AI-powered solutions — built to solve real-world
                     problems and demonstrate technical expertise.</p>
             </div>
+
+            <!-- PROJECT FILTER BUTTONS -->
+            <div class="reveal">
+                <div class="projects-filters" id="projectFilters" role="group" aria-label="Filter projects by category">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true">All Projects</button>
+                    <button class="filter-btn" data-filter="ml" aria-pressed="false">AI/ML</button>
+                    <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
+                    <button class="filter-btn" data-filter="python" aria-pressed="false">Python</button>
+                </div>
+            </div>
+
             <div class="projects-carousel-wrapper">
                 <button class="carousel-btn prev-btn" aria-label="Previous project">←</button>
                 <div class="projects-grid carousel-track" id="projects-track">
 
-                    <!-- Featured Project -->
-                    <div class="project-card reveal">
+                    <!-- Featured Project: CS50 - Web -->
+                    <div class="project-card visible" data-category="web,python">
                         <div class="project-thumb">💻</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1419,8 +2658,8 @@
                         </div>
                     </div>
 
-                    <!-- Project 2 -->
-                    <div class="project-card reveal">
+                    <!-- Project 2: Salary Slip - Web -->
+                    <div class="project-card visible" data-category="web">
                         <div class="project-thumb green">💰</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1445,8 +2684,8 @@
                         </div>
                     </div>
 
-                    <!-- Project 3 -->
-                    <div class="project-card reveal" style="transition-delay:0.1s">
+                    <!-- Project 3: Library Management - Web -->
+                    <div class="project-card visible" data-category="web">
                         <div class="project-thumb orange">📚</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1471,8 +2710,8 @@
                         </div>
                     </div>
 
-                    <!-- Project 4 -->
-                    <div class="project-card reveal" style="transition-delay:0.15s">
+                    <!-- Project 4: Resume Analyzer - ML, Python -->
+                    <div class="project-card visible" data-category="ml,python">
                         <div class="project-thumb purple">📄</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1498,8 +2737,8 @@
                         </div>
                     </div>
 
-                    <!-- Project 5 -->
-                    <div class="project-card reveal" style="transition-delay:0.2s">
+                    <!-- Project 5: Recommendation Engine - ML, Python -->
+                    <div class="project-card visible" data-category="ml,python">
                         <div class="project-thumb blue">🛒</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1524,8 +2763,8 @@
                         </div>
                     </div>
 
-                    <!-- Project 6 -->
-                    <div class="project-card reveal" style="transition-delay:0.25s">
+                    <!-- Project 6: Task Management - Web -->
+                    <div class="project-card visible" data-category="web">
                         <div class="project-thumb green">✅</div>
                         <div class="project-body">
                             <div class="project-meta">
@@ -1699,8 +2938,56 @@
         </p>
     </footer>
 
+    <!-- CHATBOT WIDGET -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <!-- Toggle Button -->
+        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat" title="Chat with me">
+            💬
+        </button>
+
+        <!-- Chat Window -->
+        <div class="chatbot-window" id="chatbotWindow">
+            <!-- Header -->
+            <div class="chatbot-header">
+                <h3>Chat with me!</h3>
+                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat">×</button>
+            </div>
+
+            <!-- Messages -->
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Welcome message -->
+                <div class="message bot">
+                    <div class="message-content">
+                        Hi! 👋 I'm Rohit's AI assistant. Ask me about my <strong>projects</strong>, <strong>skills</strong>, or <strong>contact</strong> info. How can I help?
+                    </div>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="chatbot-suggestions" id="chatbotSuggestions">
+                    <button class="suggestion-btn" data-suggestion="What are your projects?">📁 Your Projects</button>
+                    <button class="suggestion-btn" data-suggestion="What are your skills?">🛠️ Your Skills</button>
+                    <button class="suggestion-btn" data-suggestion="How can I contact you?">📞 Contact Info</button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chatbot-input-area">
+                <input 
+                    type="text" 
+                    class="chatbot-input" 
+                    id="chatbotInput" 
+                    placeholder="Type your message..."
+                    aria-label="Chat input"
+                >
+                <button class="chatbot-send" id="chatbotSend" aria-label="Send message">→</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Scroll reveal
+        // ════════════════════════════════════════════════════════════════
+        // INTERSECTION OBSERVER FOR SCROLL REVEAL ANIMATIONS
+        // ════════════════════════════════════════════════════════════════
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -1712,7 +2999,218 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Active nav highlight
+        // ════════════════════════════════════════════════════════════════
+        // SKILLS SECTION - ANIMATED PROGRESS BARS
+        // ════════════════════════════════════════════════════════════════
+        const skillsSection = document.getElementById('skills');
+        const skillsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate skill items
+                    const skillItems = entry.target.querySelectorAll('.skill-item');
+                    skillItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('animate');
+                        }, index * 100); // Stagger animation
+                    });
+
+                    // Animate circular skills
+                    const circularSkills = entry.target.querySelectorAll('.circular-skill');
+                    circularSkills.forEach((skill, index) => {
+                        setTimeout(() => {
+                            skill.classList.add('animate');
+                        }, (skillItems.length + index) * 100);
+                    });
+
+                    skillsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        if (skillsSection) {
+            skillsObserver.observe(skillsSection);
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        // SKILLS CATEGORY TABS FUNCTIONALITY
+        // ════════════════════════════════════════════════════════════════
+        const skillsTabs = document.querySelectorAll('.skills-tab');
+        const skillsGrids = document.querySelectorAll('.skills-grid[id]');
+
+        skillsTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.dataset.category;
+
+                // Update active tab
+                skillsTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Hide all grids, show selected one
+                skillsGrids.forEach(grid => {
+                    grid.style.display = 'none';
+                });
+
+                const selectedGrid = document.getElementById(category);
+                if (selectedGrid) {
+                    selectedGrid.style.display = 'grid';
+
+                    // Re-trigger animation for newly visible items
+                    const skillItems = selectedGrid.querySelectorAll('.skill-item');
+                    skillItems.forEach((item, index) => {
+                        item.classList.remove('animate');
+                        setTimeout(() => {
+                            item.classList.add('animate');
+                        }, index * 100);
+                    });
+                }
+            });
+        });
+
+        // ════════════════════════════════════════════════════════════════
+        // PROJECT FILTER FUNCTIONALITY (MODULAR & ACCESSIBLE)
+        // ════════════════════════════════════════════════════════════════
+        
+        /**
+         * ProjectFilter - Handles dynamic filtering of projects
+         * Features:
+         * - Smooth transitions on filter/show
+         * - Accessible keyboard navigation
+         * - Maintains carousel functionality
+         * - Responsive layout support
+         */
+        class ProjectFilter {
+            constructor() {
+                this.filterButtons = document.querySelectorAll('[id="projectFilters"] .filter-btn');
+                this.projectCards = document.querySelectorAll('[data-category]');
+                this.currentFilter = 'all';
+                
+                this.init();
+            }
+
+            init() {
+                // Attach event listeners to filter buttons
+                this.filterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleFilterClick(e));
+                    btn.addEventListener('keydown', (e) => this.handleKeyboard(e));
+                });
+            }
+
+            /**
+             * Handle filter button click
+             * @param {Event} e - Click event
+             */
+            handleFilterClick(e) {
+                const filterValue = e.target.dataset.filter;
+                this.applyFilter(filterValue);
+                // Update aria-pressed for accessibility
+                e.target.blur();
+            }
+
+            /**
+             * Handle keyboard navigation (space/enter to activate, arrow keys to navigate)
+             * @param {KeyboardEvent} e - Keyboard event
+             */
+            handleKeyboard(e) {
+                if (e.code === 'Space' || e.code === 'Enter') {
+                    e.preventDefault();
+                    this.handleFilterClick(e);
+                } else if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
+                    this.navigateButtons(e);
+                }
+            }
+
+            /**
+             * Navigate between filter buttons with arrow keys
+             * @param {KeyboardEvent} e - Keyboard event
+             */
+            navigateButtons(e) {
+                const buttons = Array.from(this.filterButtons);
+                const currentIndex = buttons.findIndex(btn => btn === document.activeElement);
+                let nextIndex = currentIndex;
+
+                if (e.code === 'ArrowRight') {
+                    nextIndex = (currentIndex + 1) % buttons.length;
+                } else if (e.code === 'ArrowLeft') {
+                    nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+                }
+
+                buttons[nextIndex].focus();
+                e.preventDefault();
+            }
+
+            /**
+             * Apply filter to projects with smooth transitions
+             * @param {string} filterValue - Filter category (all, ml, web, python)
+             */
+            applyFilter(filterValue) {
+                // Update current filter
+                this.currentFilter = filterValue;
+
+                // Update button states
+                this.updateButtonStates(filterValue);
+
+                // Filter projects with staggered animations
+                this.filterProjects(filterValue);
+
+                // Reset carousel scroll to start
+                this.resetCarouselScroll();
+            }
+
+            /**
+             * Update active/inactive states for filter buttons
+             * @param {string} activeFilter - Currently active filter
+             */
+            updateButtonStates(activeFilter) {
+                this.filterButtons.forEach(btn => {
+                    const isActive = btn.dataset.filter === activeFilter;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-pressed', isActive.toString());
+                });
+            }
+
+            /**
+             * Filter projects based on category with smooth transitions
+             * @param {string} filterValue - Filter category
+             */
+            filterProjects(filterValue) {
+                let visibleCount = 0;
+
+                this.projectCards.forEach((card, index) => {
+                    const categories = card.dataset.category.split(',');
+                    const matches = filterValue === 'all' || categories.includes(filterValue);
+
+                    // Remove old classes
+                    card.classList.remove('filtered', 'visible');
+
+                    if (matches) {
+                        // Stagger animation for smooth reveal
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, visibleCount * 100);
+                        visibleCount++;
+                    } else {
+                        card.classList.add('filtered');
+                    }
+                });
+            }
+
+            /**
+             * Reset carousel scroll position when filter changes
+             */
+            resetCarouselScroll() {
+                const track = document.getElementById('projects-track');
+                if (track) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                }
+            }
+        }
+
+        // Initialize project filter when DOM is ready
+        const projectFilter = new ProjectFilter();
+
+        // ════════════════════════════════════════════════════════════════
+        // ACTIVE NAV HIGHLIGHT (for scroll position)
+        // ════════════════════════════════════════════════════════════════
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-links a');
         window.addEventListener('scroll', () => {
@@ -1725,7 +3223,9 @@
             });
         });
 
-        // Projects Carousel Logic
+        // ════════════════════════════════════════════════════════════════
+        // PROJECTS CAROUSEL LOGIC
+        // ════════════════════════════════════════════════════════════════
         const track = document.getElementById('projects-track');
         const prevBtn = document.querySelector('.prev-btn');
         const nextBtn = document.querySelector('.next-btn');
@@ -1780,7 +3280,9 @@
             });
         }
 
-        // Theme toggle functionality
+        // ════════════════════════════════════════════════════════════════
+        // THEME TOGGLE FUNCTIONALITY
+        // ════════════════════════════════════════════════════════════════
         const themeToggleBtn = document.getElementById('theme-toggle');
         const rootElement = document.documentElement;
 
@@ -1796,6 +3298,275 @@
                 rootElement.classList.remove('theme-transition');
             }, 300);
         });
+
+        // ════════════════════════════════════════════════════════════════
+        // CHATBOT WIDGET - AI ASSISTANT
+        // ════════════════════════════════════════════════════════════════
+
+        /**
+         * Chatbot - Intelligent assistant for portfolio
+         * Features:
+         * - Rule-based NLP matching
+         * - Dynamic response generation
+         * - Smooth animations and transitions
+         * - Suggestion buttons
+         * - Mobile responsive
+         */
+        class Chatbot {
+            constructor() {
+                this.toggle = document.getElementById('chatbotToggle');
+                this.window = document.getElementById('chatbotWindow');
+                this.close = document.getElementById('chatbotClose');
+                this.messagesContainer = document.getElementById('chatbotMessages');
+                this.input = document.getElementById('chatbotInput');
+                this.sendBtn = document.getElementById('chatbotSend');
+                this.suggestionsContainer = document.getElementById('chatbotSuggestions');
+                this.isOpen = false;
+
+                // Knowledge base for responses
+                this.responses = {
+                    projects: {
+                        keywords: ['project', 'projects', 'work', 'portfolio', 'built', 'developed', 'created'],
+                        response: [
+                            "I've worked on several projects including:",
+                            "🔹 <strong>AI-Powered Resume Analyzer</strong> - NLP tool using spaCy & Transformers",
+                            "🔹 <strong>E-commerce Recommendation Engine</strong> - Collaborative filtering system",
+                            "🔹 <strong>Library Management System</strong> - Full-stack Java & Spring Boot app",
+                            "🔹 <strong>Salary Slip Generator</strong> - Automated Node.js application",
+                            "You can see more details on my portfolio. Want to know about any specific project?"
+                        ].join('<br>')
+                    },
+                    skills: {
+                        keywords: ['skill', 'skills', 'technology', 'languages', 'tools', 'frameworks', 'expertise', 'know', 'good at'],
+                        response: [
+                            "My key skills include:",
+                            "🐍 <strong>Programming:</strong> Python, JavaScript, SQL, C++, Java",
+                            "🧠 <strong>ML/DL:</strong> TensorFlow, PyTorch, Scikit-learn, Hugging Face",
+                            "📊 <strong>Data:</strong> Pandas, NumPy, Matplotlib, Seaborn",
+                            "☁️ <strong>Tools:</strong> Git, Google Colab, Docker, FastAPI",
+                            "I'm expert in Python and ML frameworks. Check the skills section for proficiency levels!"
+                        ].join('<br>')
+                    },
+                    contact: {
+                        keywords: ['contact', 'email', 'reach', 'connect', 'message', 'linkedin', 'github', 'social'],
+                        response: [
+                            "You can reach me through:",
+                            "📧 <strong>Email:</strong> gusainrohit730@gmail.com",
+                            "💼 <strong>LinkedIn:</strong> linkedin.com/in/rohit-gusain-68a584317",
+                            "🔗 <strong>GitHub:</strong> github.com/rohitgusain798",
+                            "Feel free to connect with me for opportunities or collaborations!"
+                        ].join('<br>')
+                    },
+                    about: {
+                        keywords: ['about', 'who', 'introduce', 'yourself', 'tell me', 'background', 'student'],
+                        response: [
+                            "Hi! I'm <strong>Rohit Gusain</strong>, a first-year B.Tech CSE student specializing in AI/ML.",
+                            "I'm passionate about machine learning, data-driven solutions, and building intelligent systems.",
+                            "With hands-on experience in NLP, computer vision, and web development, I love turning ideas into real-world impact.",
+                            "Currently, I'm exploring Transformer architectures and MLOps. Always eager to learn and collaborate! 🚀"
+                        ].join('<br>')
+                    },
+                    education: {
+                        keywords: ['education', 'study', 'degree', 'university', 'college', 'school', 'learning'],
+                        response: [
+                            "My education background:",
+                            "🎓 <strong>Manav Rachna University</strong> - B.Tech CSE (AI/ML)",
+                            "   CGPA: 8.1/10 | Ongoing (2025-2029)",
+                            "📚 <strong>Hayde Heritage Academy</strong> - Class XII (CBSE)",
+                            "   Score: 94.4% | PCM + Computer Science",
+                            "I'm an active member of AI Research Club and Data Science Society!"
+                        ].join('<br>')
+                    },
+                    certification: {
+                        keywords: ['certificate', 'certification', 'certified', 'coursework', 'course'],
+                        response: [
+                            "I have completed several certifications:",
+                            "✅ <strong>Machine Learning Specialization</strong> - DeepLearning.AI & Coursera",
+                            "✅ <strong>Deep Learning Specialization</strong> - DeepLearning.AI & Coursera",
+                            "✅ <strong>Data Science Professional Certificate</strong> - IBM & Coursera",
+                            "✅ <strong>Intro & Intermediate ML</strong> - Google & Kaggle",
+                            "Currently learning practical deep learning with fast.ai!"
+                        ].join('<br>')
+                    },
+                    help: {
+                        keywords: ['help', 'hi', 'hello', 'hey', 'assistance', 'what', 'can you'],
+                        response: "I can help you learn about my projects, skills, contact information, education, and certifications. Just ask! 😊"
+                    }
+                };
+
+                this.init();
+            }
+
+            /**
+             * Initialize chatbot event listeners
+             */
+            init() {
+                this.toggle.addEventListener('click', () => this.openChat());
+                this.close.addEventListener('click', () => this.closeChat());
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                // Suggestion buttons
+                document.querySelectorAll('.suggestion-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const text = e.target.getAttribute('data-suggestion');
+                        this.input.value = text;
+                        this.sendMessage();
+                    });
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (this.isOpen && 
+                        !e.target.closest('#chatbotContainer') && 
+                        !e.target.closest('.chatbot-window')) {
+                        this.closeChat();
+                    }
+                });
+            }
+
+            /**
+             * Open chat window
+             */
+            openChat() {
+                this.isOpen = true;
+                this.window.classList.add('open');
+                this.toggle.classList.add('open');
+                this.input.focus();
+            }
+
+            /**
+             * Close chat window
+             */
+            closeChat() {
+                this.isOpen = false;
+                this.window.classList.remove('open');
+                this.toggle.classList.remove('open');
+            }
+
+            /**
+             * Send user message and get bot response
+             */
+            sendMessage() {
+                const message = this.input.value.trim();
+                if (!message) return;
+
+                // Remove suggestions when user starts chatting
+                if (this.suggestionsContainer.parentElement === this.messagesContainer) {
+                    this.suggestionsContainer.style.display = 'none';
+                }
+
+                // Add user message
+                this.addMessage(message, 'user');
+                this.input.value = '';
+
+                // Show typing indicator
+                this.showTypingIndicator();
+
+                // Get response after small delay
+                setTimeout(() => {
+                    this.removeTypingIndicator();
+                    const response = this.getBotResponse(message);
+                    this.addMessage(response, 'bot');
+                }, 800);
+            }
+
+            /**
+             * Add message to chat window
+             * @param {string} text - Message text (supports HTML)
+             * @param {string} sender - 'user' or 'bot'
+             */
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = text;
+                
+                messageDiv.appendChild(contentDiv);
+                this.messagesContainer.appendChild(messageDiv);
+
+                // Scroll to bottom
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            /**
+             * Show typing indicator
+             */
+            showTypingIndicator() {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot typing';
+                messageDiv.id = 'typingIndicator';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+                
+                messageDiv.appendChild(contentDiv);
+                this.messagesContainer.appendChild(messageDiv);
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            /**
+             * Remove typing indicator
+             */
+            removeTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) indicator.remove();
+            }
+
+            /**
+             * Rule-based NLP: Analyze input and generate response
+             * @param {string} userInput - User's message
+             * @returns {string} Bot response
+             */
+            getBotResponse(userInput) {
+                const input = userInput.toLowerCase();
+
+                // Check each response category
+                for (const [key, data] of Object.entries(this.responses)) {
+                    // Check if any keyword matches
+                    const hasKeyword = data.keywords.some(keyword => input.includes(keyword));
+                    if (hasKeyword) {
+                        return data.response;
+                    }
+                }
+
+                // Default response for unmatched queries
+                return this.getSmartResponse(input);
+            }
+
+            /**
+             * Generate smart response for unmatched queries
+             * @param {string} input - User input
+             * @returns {string} Generated response
+             */
+            getSmartResponse(input) {
+                // Check for greetings
+                if (['hi', 'hello', 'hey', 'howdy', 'sup', 'yo'].some(g => input.includes(g))) {
+                    return "Hey there! 👋 How can I help you today? Feel free to ask about my projects, skills, or how to contact me!";
+                }
+
+                // Check for questions about capabilities
+                if (input.includes('do you do') || input.includes('can you help')) {
+                    return "I can answer questions about my <strong>projects</strong>, <strong>skills</strong>, <strong>education</strong>, <strong>certifications</strong>, and <strong>contact information</strong>. What would you like to know?";
+                }
+
+                // Check for gratitude
+                if (['thanks', 'thank', 'appreciate', 'grateful'].some(t => input.includes(t))) {
+                    return "You're welcome! 😊 Feel free to reach out if you have any other questions!";
+                }
+
+                // Default response
+                return `I'm not entirely sure about that. Try asking me about my <strong>projects</strong>, <strong>skills</strong>, <strong>contact info</strong>, or <strong>education</strong>. What interests you? 😊`;
+            }
+        }
+
+        // Initialize chatbot on page load
+        const chatbot = new Chatbot();
     </script>
 </body>
 
